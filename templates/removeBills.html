@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="../static/css/main.css" type="text/css" charset="utf-8">
+    <meta charset="UTF-8">
+    <title>View the Bills</title>
+	<script src='../static/js/jquery-3.6.0.js'></script>
+	<script>
+		function removeBill(id){
+			console.log(id);
+
+			$.ajax({
+            url: "/removingBill",
+            type: "POST",
+            data: {id:id},
+            success: function(data){
+              alert("Successfully confirmed deletion");
+			  location.reload();
+            }
+          })
+		}
+	</script>
+  </head>
+  <body>
+
+    <section class="wrapper">
+    
+	<h2 class="textCentre">Here are the bills housemates need to pay you:</h2><br>
+	<h2 class="textCentre">Tick any boxes to remove the bills:</h2><br>
+	<table class="table">
+	<thead>
+		<th scope="col"></th>
+		<th scope="col">Cost (in £)</th>
+		<th scope="col">Paid Status</th>
+	</thead>
+		<tbody  id="names">
+		{% for bill in Bills %}
+		<tr>
+		<td><h2><input type="checkbox" id="{{bill.id}}" onclick="removeBill({{bill.id}})">{{bill.billName}}</h2></td>
+		</tr>
+		{% for payee in payees %}
+			{% if payee.bill_id == bill.id %}
+			<tr id="{{bill.id}}">
+				<td>{{payee.name}}</td>
+				<td>{{payee.cost}}</td>
+				<td>{{payee.payer_status}}</td>
+			</tr>
+			{% endif %}
+		{% endfor %}
+			{% else %}
+			<tr>
+				<td>no bills currently</td>
+			</tr>
+		{% endfor %}
+			</tbody>
+		</table>
+
+    <p class="textCentre">If you want to go to <strong>back</strong> click the button below!</p>
+
+    <form action="process" method="get">
+      <button class="button">Back</button>
+    </form>
+  </section>
+  </body>
+</html>

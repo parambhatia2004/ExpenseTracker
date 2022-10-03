@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <link rel="stylesheet" href="static/css/main.css" type="text/css"
+    charset="utf-8">
+    <script src='../static/js/jquery-3.6.0.js'></script>
+    <meta charset="UTF-8">
+    <title>Register Page</title>
+  </head>
+
+  <myDiv>
+  <body>
+
+    <section class="wrapper">
+      <img src ="/static/BS.jpeg" class="logo" alt="logo">
+
+      <div class="messages">
+        {%with messages = get_flashed_messages() %}
+        {%if messages%}
+        <p class="textCentre">messages:</p>
+        {%endif%}
+      {% for message in get_flashed_messages() %}
+        <p class="textCentre"><strong>{{ message }}</strong></p>
+      {% endfor %}
+      {%endwith%}
+      </div>
+
+        <h1>Register:</h1>
+
+
+
+      <form action='newUser' method='post'>
+
+          <label for="title"><h3>Title:</h3></label>
+
+          <label for="email"><h4>Enter email:</h4></label>
+          <input type='email' class="user_input" name='email' placeholder="Email"> <br>
+
+          <label for="uname"><h4>Enter Username:</h4></label>
+          <input type='text' class="user_input" name="uname" placeholder="Username" minlength="5"> <br>
+
+          <label for="password"><h4>Password:</h4></label>
+          <input type='password' class="user_input" name='password' placeholder="Password" minlength="8"> <br>
+          
+          <label for="repassword"><h4>Enter the password again:</h4></label>
+          <input type='password' class="user_input" name='repassword' placeholder="Re-enter password" minlength="8"> <br>
+         
+          <input type="submit" value="Register">
+        </form>
+      </section>
+  </body>
+</myDiv>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="../static/css/main.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="../static/css/popup.css" type="text/css">
+    <script src='../static/js/jquery-3.6.0.js'></script>
+    <script src='../static/js/check.js'></script>
+    <meta charset="UTF-8">
+    <title>View the list</title>
+
+    <script>
+      function Popup(){
+        document.getElementById("popup-1").classList.toggle("active");
+      }
+    </script>
+
+  </head>
+  <body>
+
+    <section class="wrapper">
+    <h2 class="textCentre">Here are the bills housemates need to pay you:</h2><br>
+    <table class="table">
+			<thead>
+        <th scope="col"></th>
+        <th scope="col">Cost (in £)</th>
+        <th scope="col">Paid Status</th>
+
+				
+      </thead>
+        <tbody  id="names">
+        {% for bill in bills %}
+      <tr>
+        <td><h2>{{bill.billName}}</h2></td>
+      </tr>
+        {% for payee in payees %}
+          {% if payee.bill_id == bill.id %}
+            <tr id="status">
+              <td>{{payee.name}}</td>
+              <td>{{payee.cost}}</td>
+              <td>{{payee.payer_status}}</td>
+            </tr>
+          {% endif %}
+        {% endfor %}
+				{% else %}
+				<tr>
+					<td>no bills currently</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+
+    <h2 class="textCentre">Here are the bills you need to pay:</h2><br>
+    <h4 class="textCentre">Tick to confirm payment</h4>
+    <table class="table">
+			
+
+<!-- Loops through the bills owed by the current user through the python variables-->
+
+			<tbody>
+        {% for individualBills in allOfBills %}
+				<tr>
+          {% for bill in payingbills %}
+            {% if individualBills.id == bill.bill_id %}
+            <td><h2><input type="checkbox" name=check id="{{bill.id}}" onclick="myFunction({{bill.id}})">{{individualBills.billName}}</h2></td>
+            <tr>
+              <td>£ {{bill.cost}}</td>
+              {% for user in allUsers%}
+                {% if user.id == individualBills.user_id %}
+                  <td>Payable to {{user.username}}</td>
+                {% endif %}
+              {% endfor %}
+            </tr>
+				</tr>
+            {% endif %}
+          {% endfor %}
+          {% else %}
+            <tr>
+              <td>no entries</td>
+            </tr>
+				{% endfor %}
+      </tbody>
+    </table>
+    <br>
+
+    <div class="popup" id="popup-1">
+      <div class="overlay"></div>
+      <div class="content">
+        <div class="close-btn" onclick="Popup()">&times;</div>
+        Here we can add a new bill!
+        <form class="form-inline">
+          <br>
+          <div class="form-group">
+            <label for="inputBillName">Enter Bill Name:</label>
+            <input type="text" class="control" id="inputBillName">
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="inputBillAmount"> Enter Bill Amount(in £)</label>
+            <input type="text" class="control" id="inputBillAmount">
+          </div>
+
+
+
+          <br>
+          <div class="form-check">
+            <ul style="list-style-type: none;">
+            {% for user in allUsers%}
+              {% if user.id != current_user.id %}
+              <li><tr><input type="checkbox" name="{{user.username}}" id="{{user.id}}">{{user.username}}</li></tr>
+              {% endif %}
+            {% endfor %}
+            </ul>
+          </div>
+          <button type="button" onclick="addBill()" class="btn" id="add">Add Bill</button>
+        </form>
+
+
+
+      </div>
+    </div>
+    <button class="button" onclick="Popup()">Add a new bill</button>
+    <br>
+
+    <form action="process" method="get">
+      <button class="button">Back</button>
+    </form>
+  </section>
+  </body>
+</html>

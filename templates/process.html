@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="static/css/main.css" type="text/css"
+    charset="utf-8">
+    <title>Logged In Successfully</title>
+    <style>
+      .notifs{
+        background: black;
+        color: aliceblue;
+        border-radius: 2em;
+      }
+    </style>
+  </head>
+
+  <section class="wrapper">
+    <body>
+
+      <img src ="/static/BS.jpeg" class="logo" alt="logo">
+      <h1 class="textCentre"> Welcome to my bill-splitting software</h1>
+
+
+      <div class="notifs">
+        {%with messages = get_flashed_messages() %}
+        {%if messages%}
+        <p class="textCentre">Notifications:</p>
+        {%endif%}
+      {% for message in get_flashed_messages() %}
+        <p class="textCentre">{{ message }}</p>
+      {% endfor %}
+      {%endwith%}
+      </div>
+
+
+        <form action="viewRaisedBills" method="get">
+          <button class="button">View All Bills</button>
+        </form>
+        <br>
+
+        <form action="confirmPayments" method="get">
+          <button class="button">Confirm Incoming payments</button>
+        </form>
+        <br>
+        <form action="removeBillsRaised" method="get">
+          <button class="button">Manually Remove Bills</button>
+        </form>
+        <br>
+
+        <form action="logout" method="get">
+          <button class="button">Logout</button>
+        </form>
+        <br>
+    </body>
+  </section>
+</html>
